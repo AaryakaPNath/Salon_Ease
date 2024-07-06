@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Confirmed Bookings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40; /* Side navbar background color */
+            color: #ffffff; /* Text color */
+            padding-top: 60px; /* Adjust padding to align content below top bar */
+        }
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+        .navbar-brand-section {
+            padding: 20px; /* Padding for the whole section */
+            text-align: center; /* Center the text */
+        }
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff; /* Text color */
+            margin-bottom: 25px; /* Remove bottom margin */
+            margin-top: -40px; /* Remove top margin */
+        }
+        .content {
+            margin-left: 250px; /* Adjust margin to push content to the right of side nav */
+            padding: 20px;
+        }
+        /* Add toggle effect */
+        .active-link {
+            color: #bf925b !important; /* Change to brown color when active */
+        }
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #343a40;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            left: 250px; /* Position the dropdown to the right of the side nav */
+            top: 0; /* Align the dropdown with the top of the side nav */
+        }
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: white; /* Initial color */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #bf925b;
+            color: white; /* Change color on hover */
+        }
+        /* Show the dropdown menu on hover */
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .nav-item {
+            position: relative; /* Needed for positioning the dropdown */
+        }
+        .nav-link .arrow {
+            float: right;
+            margin-left: 10px;
+        }
+        .table-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            color: #343a40; /* Dark gray text */
+        }
+        .table th {
+            background-color: #bf925b; /* Matching header background color */
+            color: white; /* White text */
+        }
+        .table td {
+            background-color: #f8f9fa; /* Light gray background for table cells */
+        }
+        .btn-outline-danger {
+            border-color: #bf925b; /* Matching button border color */
+            color: #bf925b; /* Matching button text color */
+        }
+        .btn-outline-success {
+            border-color: #28a745; /* Green border color for update button */
+            color: #28a745; /* Green text color for update button */
+        }
+        .btn-outline-danger:hover {
+            background-color: #bf925b; /* Matching button background color on hover */
+            color: white; /* White text on hover */
+        }
+        .btn-outline-success:hover {
+            background-color: #28a745; /* Green background color on hover */
+            color: white; /* White text on hover */
+        }
+    </style>
+</head>
+<body>
+
+<div class="side-nav">
+    <div class="navbar-brand-section">
+        <a class="navbar-brand logo" href="#">
+            <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+        </a>
+    </div>
+     <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="toggleActive(this)">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="s_profile" onclick="toggleActive(this)">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="toggleServiceOptions()">Services<span class="arrow">></span></a>
+            <div id="services-dropdown" class="dropdown-content">
+                <a href="addserv" onclick="toggleActive(this)">Add</a>
+                <a href="viewserv" onclick="toggleActive(this)">View</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="bookreq" onclick="toggleActive(this)">Booking Requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active-link" href="salonviewconf" onclick="toggleActive(this)">Confirmed Bookings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="togglePaymentOptions()">Payment<span class="arrow">></span></a>
+            <div id="payment-dropdown" class="dropdown-content">
+                <a href="salonpayview" onclick="toggleActive(this)">View Completed Payments</a>
+                <a href="salonpays" onclick="toggleActive(this)">View Total Payments</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="log_out" onclick="toggleActive(this)">Logout</a>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <h2>View Confirmed Bookings</h2> <!-- Added heading here -->
+    <div class="container table-container">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th><b>Customer Name</b></th>
+                    <th><b>Mobile/Email</b></th>
+                    <th><b>Service</b></th>
+                    <th><b>Appointment Date</b></th>
+                    <th><b>Appointment Time</b></th>
+                    <th><b>Status</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in r %}
+                    <tr>
+                        <td>{{ i.customer_name }}</td>
+                        <td>{{ i.mobile }}/<br>{{ i.email }}</td>
+                        <td>{{i.service_name}}</td>
+                        <td>{{ i.appointment_date }}</td>
+                        <td>{{ i.appointment_time }}</td>
+                        <td>{{ i.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Your custom JavaScript code goes here -->
+<script>
+    function toggleActive(link) {
+        var links = document.querySelectorAll('.nav-link');
+        links.forEach(function(item) {
+            item.classList.remove('active-link');
+        });
+        link.classList.add('active-link');
+    }
+    function toggleServiceOptions() {
+        var dropdown = document.getElementById('services-dropdown');
+        dropdown.classList.toggle('show');
+    }
+    function togglePaymentOptions() {
+        var dropdown = document.getElementById('payment-dropdown');
+        dropdown.classList.toggle('show');
+    }
+</script>
+</body>
+</html>

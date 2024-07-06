@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Registration Request</title>
+    <style>
+        body {
+            background-image: url("{% static 'images/bg-16.jpg' %}"); /* Replace with your actual image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 80%; /* Adjust the width as needed */
+            margin: auto; /* Center the table */
+            border-collapse: collapse;
+            margin-top: 50px; /* Increase margin-top value */
+            background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background to the table */
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            margin-bottom: 50px; /* Add margin at the bottom of the heading */
+            text-align: center;
+        }
+        th {
+            font-size: 20px; /* Font size for table headers */
+        }
+        td {
+            font-size: 18px; /* Font size for table cells */
+        }
+        .center-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .btn {
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-accept {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-reject {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-accept:hover {
+            background-color: #218838;
+        }
+        .btn-reject:hover {
+            background-color: #c82333;
+        }
+        .view-image {
+            cursor: pointer;
+        }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        /* Back link styles */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">&laquo; Back</a> <!-- Back link at the top left corner -->
+    <h1 class="center-title">Salon Registration Request</h1> <!-- Increase margin-bottom value -->
+    <table>
+        <thead>
+            <tr>
+                <th>Salon Name</th>
+                <th>Owner Name</th>
+                <th>Location</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>License</th>
+                <th>Action</th>
+                <th>Accept</th>
+                <th>Reject</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in r %}
+                <tr>
+                    <td>{{ i.salon_name }}</td>
+                    <td>{{ i.owner_name }}</td>
+                    <td>{{ i.city }}</td>
+                    <td>{{ i.phone_number }}</td>
+                    <td>{{ i.email }}</td>
+                    <td><img src="{{ i.license.url }}" height="100px" width="100px" class="view-image"></td>
+                    <td>{{i.action}}</td>
+                    <td>
+                        <form method="POST" action="s_update">
+                            {% csrf_token %}
+                            <input type="text" value="{{i.salon_name}}" name="b1" hidden>
+                            <input type="submit" value="Accept" class="btn btn-accept">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="delete">
+                            {% csrf_token %}
+                            <input type="text" value="{{i.salon_name}}" name="b2" hidden>
+                            <input type="submit" value="Reject" class="btn btn-reject">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var images = document.getElementsByClassName("view-image");
+        var modalImg = document.getElementById("img01");
+
+        for (var i = 0; i < images.length; i++) {
+            images[i].onclick = function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>

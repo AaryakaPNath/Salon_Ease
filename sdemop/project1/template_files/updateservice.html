@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Service</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url("{% static 'images/bg-4.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Lato', sans-serif;
+    }
+    .main-agileits {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    .sub-head {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .sub-main {
+      display: flex;
+      flex-direction: column;
+    }
+    .sub-main input {
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: calc(100% - 22px); /* Adjusted width to account for padding */
+    }
+    .sub-main input[type="submit"] {
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .sub-main input[type="submit"]:hover {
+      background-color: #555;
+    }
+    .header-w3l, .footer-w3 {
+      display: none;
+    }
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <a href="viewserv" class="back-link">&laquo; Back</a>
+  <div class="main-agileits">
+    <h2 class="sub-head">Services</h2>
+    <div class="sub-main">
+      <form action="updateserv" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for i in r %}
+          <input name="n" value="{{i.username}}" type="text" hidden>
+           <input name="n4" value="{{i.category}}" type="text" required>
+          <input name="n1" value="{{i.service_name}}" type="text" required>
+          <input name="n2" value="{{i.description}}" type="text" required>
+          <input name="n3" value="{{i.amount}}" type="text" required>
+          <input name="n5" value="{{i.service_photo.url}}" type="file" required>
+           <input name="n6" value="{{i.gender}}" type="text" hidden>
+        {% endfor %}
+        <input type="submit" class="btn btn-default btn-send" onclick="return confirm('Are You Sure')" value="Update">
+      </form>
+    </div>
+  </div>
+</body>
+</html>

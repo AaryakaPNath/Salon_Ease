@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-image: url('{% static 'images/bg-14.jpg' %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40; /* Side navbar background color */
+            color: #ffffff; /* Text color */
+            padding-top: 60px; /* Adjust padding to align content below top bar */
+        }
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+        .navbar-brand-section {
+            padding: 20px; /* Padding for the whole section */
+            text-align: center; /* Center the text */
+        }
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff; /* Text color */
+            margin-bottom: 25px; /* Remove bottom margin */
+            margin-top: -40px; /* Remove top margin */
+        }
+        .content {
+            margin-left: 250px; /* Adjust margin to push content to the right of side nav */
+            padding: 20px;
+            color: #ffffff; /* Adjust content text color for better visibility */
+        }
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px; /* Adjust to move it further to the left */
+            color: #000000; /* Change color to black */
+        }
+        .search-bar-container {
+            position: absolute;
+            top: 20px;
+            right: 200px; /* Adjust to move it further to the left */
+            color: #ffffff; /* Change default color to white */
+        }
+        .search-bar {
+            border: 1px solid #fff; /* Add border */
+            border-radius: 5px; /* Add border-radius */
+            padding: 8px 10px; /* Adjust padding */
+            background-color: #343a40; /* Background color to match the side nav */
+            color: #ffffff; /* Text color */
+            outline: none; /* Remove outline */
+            width: 200px; /* Adjust width as needed */
+        }
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px; /* Adjust to move it further to the left */
+            transform: translateY(-50%);
+            width: 20px; /* Adjust size as needed */
+        }
+
+        /* Add toggle effect */
+        .active-link {
+            color: #bf925b !important; /* Change to brown color when active */
+        }
+        .welcome-message {
+            color: #000000; /* Change color to black */
+        }
+    </style>
+</head>
+<body>
+
+<div class="side-nav">
+    <div class="navbar-brand-section">
+        <a class="navbar-brand logo" href="#">
+            <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+        </a>
+    </div>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active-link" href="/" onclick="toggleActive(this)">Home</a> <!-- Add active-link class here -->
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="req" onclick="toggleActive(this)">Requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="view" onclick="toggleActive(this)">View Salons</a>
+        </li>
+        <li class="nav-item">
+        <li class="nav-item">
+            <a class="nav-link" href="avbook" onclick="toggleActive(this)">View Booking</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="toggleActive(this)">Others</a>
+            <ul>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="adpayview" onclick="toggleActive(this)">Payments</a>-->
+<!--                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link" href="adviewcon" onclick="toggleActive(this)">Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="adviewcomp" onclick="toggleActive(this)">Complaints</a>
+                </li>
+            </ul>
+        <li class="nav-item">
+            <a class="nav-link" href="log_out" onclick="toggleActive(this)">Logout</a>
+        </li>
+    </ul>
+</div>
+
+<div class="content">
+    <!-- Your content goes here -->
+    <h3 class="welcome-message">Welcome, Admin</h3>
+</div>
+
+<a class="logout" href="log_out">Logout</a>
+
+<!-- Bootstrap scripts (jQuery and Popper.js are required) -->
+<script src="{% static 'https://code.jquery.com/jquery-3.5.1.slim.min.js' %}"></script>
+<script src="{% static 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js' %}"></script>
+<script src="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %}"></script>
+<!-- Your custom JavaScript code goes here -->
+<script>
+    function toggleActive(link) {
+        var links = document.querySelectorAll('.nav-link');
+        links.forEach(function(item) {
+            item.classList.remove('active-link');
+        });
+        link.classList.add('active-link');
+    }
+</script>
+</body>
+</html>

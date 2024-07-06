@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/bg-11.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: rgba(52, 58, 64, 0.9);
+            color: #ffffff;
+            padding-top: 60px;
+        }
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+        .navbar-brand-section {
+            padding: 20px;
+            text-align: center;
+        }
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 25px;
+            margin-top: -40px;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px;
+            color: #000000;
+        }
+        .search-bar-container {
+            position: absolute;
+            top: 20px;
+            right: 200px;
+            color: #000000;
+        }
+        .search-bar {
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 8px 10px;
+            background-color: #fff;
+            outline: none;
+            width: 200px;
+        }
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 20px;
+        }
+        .active-link {
+            color: #bf925b !important;
+        }
+        .welcome-message {
+            color: #000000;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #343a40;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            left: 250px;
+            top: 0;
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #bf925b;
+            color: white;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link .arrow {
+            float: right;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="side-nav">
+    <div class="navbar-brand-section">
+        <a class="navbar-brand logo" href="#">
+            <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+        </a>
+    </div>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active-link" href="#" onclick="toggleActive(this)">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="s_profile" onclick="toggleActive(this)">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="toggleServiceOptions()">Services<span class="arrow">></span></a>
+            <div id="services-dropdown" class="dropdown-content">
+                <a href="addserv" onclick="toggleActive(this)">Add</a>
+                <a href="viewserv" onclick="toggleActive(this)">View</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="bookreq" onclick="toggleActive(this)">Booking Requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="salonviewconf" onclick="toggleActive(this)">Confirmed Bookings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="togglePaymentOptions()">Payment<span class="arrow">></span></a>
+            <div id="payment-dropdown" class="dropdown-content">
+                <a href="salonpayview" onclick="toggleActive(this)">View Completed Payments</a>
+                <a href="salonpays" onclick="toggleActive(this)">View Total Payments</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="log_out" onclick="toggleActive(this)">Logout</a>
+        </li>
+    </ul>
+</div>
+
+<div class="content">
+    {% for i in r %}
+        <h3 class="welcome-message">Welcome {{ i.salon_name }}!</h3>
+    {% endfor %}
+</div>
+
+<a class="logout" href="log_out">Logout</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function toggleActive(link) {
+        var links = document.querySelectorAll('.nav-link');
+        links.forEach(function(item) {
+            item.classList.remove('active-link');
+        });
+        link.classList.add('active-link');
+    }
+    function toggleServiceOptions() {
+        var dropdown = document.getElementById('services-dropdown');
+        dropdown.classList.toggle('show');
+    }
+    function togglePaymentOptions() {
+        var dropdown = document.getElementById('payment-dropdown');
+        dropdown.classList.toggle('show');
+    }
+</script>
+</body>
+</html>

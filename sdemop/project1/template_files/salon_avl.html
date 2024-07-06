@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/bg-3.jpg' %}"); /* Background image */
+            background-size: cover; /* Make the image cover the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            background-attachment: fixed; /* Fix the background image so it doesn't scroll with the page */
+        }
+        .header-container {
+            position: fixed;
+            top: 50%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(52, 58, 64, 0.9); /* Background color with opacity */
+            color: #ffffff; /* Text color */
+            padding: 20px;
+            max-width: 80%; /* Adjust the width of the container */
+            text-align: center; /* Center the text */
+        }
+        .header-container h1 {
+            color: #bf925b; /* Change text color of the first line */
+        }
+        .header-container p {
+            font-size: 25px; /* Increase font size of the second line */
+        }
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: rgba(52, 58, 64, 0.9); /* Side navbar background color with opacity */
+            color: #ffffff; /* Text color */
+            padding-top: 60px; /* Adjust padding to align content below top bar */
+        }
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+        .navbar-brand-section {
+            padding: 20px; /* Padding for the whole section */
+            text-align: center; /* Center the text */
+        }
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff; /* Text color */
+            margin-bottom: 25px; /* Remove bottom margin */
+            margin-top: -40px; /* Remove top margin */
+        }
+        .content {
+            margin-left: 250px; /* Adjust margin to push content to the right of side nav */
+            padding: 20px;
+        }
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px; /* Adjust to move it further to the left */
+            color: #000000; /* Change default color to black */
+        }
+        /* Add toggle effect */
+        .active-link {
+            color: #bf925b !important; /* Change to brown color when active */
+        }
+        .welcome-message {
+            color: #bf925b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="side-nav">
+    <div class="navbar-brand-section">
+        <a class="navbar-brand logo" href="#">
+            <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+        </a>
+    </div>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active-link" href="salon_avl/{{ request.session.sa_id }}" onclick="toggleActive(this)">Home</a> <!-- Add active-link class here -->
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../det" onclick="toggleActive(this)">Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../serv" onclick="toggleActive(this)">Services</a>
+        </li>
+<!--        <li class="nav-item">-->
+<!--            <a class="nav-link" href="../book" onclick="toggleActive(this)">Book Appointment</a>-->
+<!--        </li>-->
+        <li class="nav-item">
+            <a class="nav-link" href="../logoutt" onclick="toggleActive(this)">Logout</a>
+        </li>
+    </ul>
+</div>
+
+<div class="header-container">
+    <h1>Your Beauty, Our Priority!</h1>
+    <p>Experience exceptional care and personalized service.</p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Your custom JavaScript code goes here -->
+<script>
+    function toggleActive(link) {
+        var links = document.querySelectorAll('.nav-link');
+        links.forEach(function(item) {
+            item.classList.remove('active-link');
+        });
+        link.classList.add('active-link');
+    }
+</script>
+</body>
+</html>

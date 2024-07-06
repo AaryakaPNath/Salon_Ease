@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/bg-10.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 400px;
+            max-width: 90%;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form input[type="text"], form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .back-link {
+            text-align: left;
+            margin: 20px;
+            color: black;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/" class="back-link">&laquo; Back</a>
+
+<div class="container">
+    <h2>COMPLAINT</h2>
+    <form action="comp" method="POST">
+        {% csrf_token %}
+        {% for i in r %}
+        <input name="p1" type="text" value="{{i.username}}" hidden>
+        <input placeholder="Name" name="p2" type="text" value="{{i.name}}" required>
+        <input type="text" placeholder="Phone Number" name="p3" value="{{i.phone_number}}" pattern="[0-9]{10}" required>
+        <input placeholder="Email" name="p4" type="text" value="{{i.email}}"  pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+        <textarea placeholder="Complaint" name="p5" required></textarea>
+        <input type="submit" onclick="return confirm('Are You Sure')" value="Send">
+        {% endfor %}
+    </form>
+</div>
+
+</body>
+</html>

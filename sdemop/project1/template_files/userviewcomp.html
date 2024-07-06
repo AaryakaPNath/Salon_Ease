@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Complaints</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40; /* Side navbar background color */
+            color: #ffffff; /* Text color */
+            padding-top: 60px; /* Adjust padding to align content below top bar */
+        }
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+        .navbar-brand-section {
+            padding: 20px; /* Padding for the whole section */
+            text-align: center; /* Center the text */
+        }
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff; /* Text color */
+            margin-bottom: 25px; /* Remove bottom margin */
+            margin-top: -40px; /* Remove top margin */
+        }
+        .content {
+            margin-left: 250px; /* Adjust margin to push content to the right of side nav */
+            padding: 20px;
+        }
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px; /* Adjust to move it further to the left */
+            color: #000000; /* Change default color to black */
+        }
+        .active-link {
+            color: #bf925b !important; /* Change to brown color when active */
+        }
+        .welcome-message {
+            color: #bf925b;
+        }
+        .complaints-heading {
+            font-size: 28px; /* Increased font size */
+            color: #343a40;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #6c757d; /* Change to desired color */
+            color: #ffffff; /* Change text color */
+            font-family: 'Open Sans', sans-serif; /* Change table header font */
+            font-weight: 600; /* Adjust font weight if needed */
+        }
+        .table td {
+            background-color: #f8f9fa; /* Light gray background for table cells */
+            color: #343a40; /* Text color */
+        }
+        .btn-outline-danger {
+            border-color: #bf925b; /* Matching button border color */
+            color: #bf925b; /* Matching button text color */
+        }
+        .btn-outline-success {
+            border-color: #28a745; /* Green border color for update button */
+            color: #28a745; /* Green text color for update button */
+        }
+        .btn-outline-danger:hover {
+            background-color: #bf925b; /* Matching button background color on hover */
+            color: white; /* White text on hover */
+        }
+        .btn-outline-success:hover {
+            background-color: #28a745; /* Green background color on hover */
+            color: white; /* White text on hover */
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #343a40;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            left: 250px;
+            top: 0;
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #bf925b;
+            color: white;
+        }
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link .arrow {
+            float: right;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="side-nav">
+    <div class="navbar-brand-section">
+        <a class="navbar-brand logo" href="#">
+            <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+        </a>
+    </div>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="/" onclick="toggleActive(this)">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="profile" onclick="toggleActive(this)">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="uviewappt" onclick="toggleActive(this)">My Appointments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active-link" href="#" onclick="toggleComplaintOptions()">Complaint<span class="arrow">></span></a>
+            <div id="complaint-dropdown" class="dropdown-content">
+                <a href="comp" onclick="toggleActive(this)">Add</a>
+                <a href="usviewcomp" onclick="toggleActive(this)">View</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="log_out" onclick="toggleActive(this)">Logout</a>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <h3 class="complaints-heading"><center><b>USER COMPLAINTS</b></center></h3>
+    <div class="container table-container">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th><b>Name</b></th>
+                    <th><b>Email</b></th>
+                    <th><b>Phone Number</b></th>
+                    <th><b>Complaint</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in r %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.email }}</td>
+                        <td>{{ i.mobile }}</td>
+                        <td>{{ i.complaint }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Your custom JavaScript code goes here -->
+<script>
+    function toggleActive(link) {
+        var links = document.querySelectorAll('.nav-link');
+        links.forEach(function(item) {
+            item.classList.remove('active-link');
+        });
+        link.classList.add('active-link');
+    }
+    function toggleComplaintOptions() {
+        var dropdown = document.getElementById('complaint-dropdown');
+        dropdown.classList.toggle('show');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load static %}
+<!-- Designed by CodingLab - youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Salon Registration Form | CodingLab</title>
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<a href="/" class="back-link" style="position: absolute; top: 10px; left: 10px; text-decoration: none; color: #333; font-weight: bold;">&laquo; Back</a>
+
+<div class="container">
+    <div class="title">Salon Registration</div>
+    <div class="content">
+        {% if message %}
+            <div class="error-message">{{ message }}</div>
+        {% endif %}
+        <form method="post" action="salon" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Salon Name</span>
+                    <input type="text" name="n1" placeholder="Enter salon name" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Username</span>
+                    <input type="text" name="n2" placeholder="Enter your username" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Owner's name</span>
+                    <input type="text" name="n3" placeholder="Enter owner's name" required>
+                </div>
+                 <div class="input-box">
+                    <span class="details">Email</span>
+                    <input type="email" name="n4" placeholder="Enter your email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Phone Number</span>
+                    <input type="number" name="n5" placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Working Hours</span>
+                    <input type="text" name="n12" placeholder="Enter your working hours" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">City</span>
+                    <input type="tel" name="n6" placeholder="Enter your city" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Zip Code</span>
+                    <input type="text" name="n7" placeholder="Enter your zip code" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Photo</span>
+                    <input type="file" name="n11"  required> <!-- Add allowed file formats -->
+                </div>
+               <div class="input-box">
+                    <span class="details">License</span>
+                    <input type="file" name="n8"  required> <!-- Add allowed file formats -->
+                </div>
+                <div class="input-box">
+                    <span class="details">Password</span>
+                    <input type="password" name="n9" placeholder="Enter password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Confirm Password</span>
+                    <input type="password" name="n10" placeholder="Confirm password" required>
+                </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

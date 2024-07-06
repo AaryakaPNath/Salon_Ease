@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User View Salon Details</title>
+    <link rel="stylesheet" href="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40; /* Side navbar background color */
+            color: #ffffff; /* Text color */
+            padding-top: 60px; /* Adjust padding to align content below top bar */
+        }
+
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar-brand-section {
+            padding: 20px; /* Padding for the whole section */
+            text-align: center; /* Center the text */
+        }
+
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff; /* Text color */
+            margin-bottom: 25px; /* Remove bottom margin */
+            margin-top: -40px; /* Remove top margin */
+        }
+
+        .content {
+            margin-left: 250px; /* Adjust margin to push content to the right of side nav */
+            padding: 20px;
+        }
+
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px; /* Adjust to move it further to the left */
+            color: #000000; /* Change default color to black */
+        }
+
+        .search-bar-container {
+            position: absolute;
+            top: 20px;
+            right: 200px; /* Adjust to move it further to the left */
+            color: #000000; /* Change default color to black */
+        }
+
+        .search-bar {
+            border: 1px solid #000; /* Add border */
+            border-radius: 5px; /* Add border-radius */
+            padding: 8px 10px; /* Adjust padding */
+            background-color: #fff; /* Background color */
+            outline: none; /* Remove outline */
+            width: 200px; /* Adjust width as needed */
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px; /* Adjust to move it further to the left */
+            transform: translateY(-50%);
+            width: 20px; /* Adjust size as needed */
+        }
+
+        /* Add toggle effect */
+        .active-link {
+            color: #bf925b !important; /* Change to brown color when active */
+        }
+
+        .welcome-message {
+            color: #bf925b;
+        }
+
+        .profile-container {
+            margin-left: 250px; /* Adjust margin to account for side navbar */
+            padding: 20px;
+        }
+
+        .form-input-reduced {
+            width: 100%; /* Adjust the width as needed */
+        }
+
+        .fas {
+            /* Font Awesome icon styles (adjust as needed) */
+            font-size: 16px;
+            color: #ccc;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .form-control-sm {
+            width: 100%; /* Adjust the width as needed */
+        }
+
+        #show-password {
+            cursor: pointer;
+        }
+
+        .change-password-link {
+            position: absolute;
+            top: 70%; /* Align it below the input box */
+            right: calc(100% - 500px); /* Align it to the left side of the input box */
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .profile-container h1 {
+            margin-bottom: 40px; /* Add more space below the heading */
+        }
+
+        .photo-image {
+            display: block;
+            margin: 0 auto 20px auto; /* Center the image and add margin below */
+            width: 250px; /* Adjust as needed */
+            height: 250px; /* Maintain aspect ratio */
+        }
+
+        .license-image {
+            display: block;
+            margin: 0 auto 20px auto; /* Center the image and add margin below */
+            width: 250px; /* Adjust as needed */
+            height: 250px; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="side-nav">
+        <div class="navbar-brand-section">
+            <a class="navbar-brand logo" href="#">
+                <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+            </a>
+        </div>
+        <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="salon_avl/<a>" onclick="toggleActive(this)">Home</a> <!-- Add active-link class here -->
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active-link" href="../det" onclick="toggleActive(this)">Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../serv" onclick="toggleActive(this)">Services</a>
+        </li>
+<!--        <li class="nav-item">-->
+<!--            <a class="nav-link" href="../book" onclick="toggleActive(this)">Book Appointment</a>-->
+<!--        </li>-->
+        <li class="nav-item">
+            <a class="nav-link" href="../logoutt" onclick="toggleActive(this)">Logout</a>
+        </li>
+    </ul>
+</div>
+<!--<a class="logout" href="log_out">Logout</a>-->
+    {% for i in r %}
+    <div class="profile-container">
+        <h1>{{i.salon_name}} Details</h1>
+        <div class="row">
+            <div class="col-md-8">
+<!--                <form action="update_profile_salon" method="POST" enctype="multipart/form-data">-->
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="salon_name" class="col-sm-3 col-form-label">Name:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="salon_name" name="salon_name" class="form-control form-input-reduced"
+                                value="{{ i.salon_name }}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="time" class="col-sm-3 col-form-label">Time:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="time" name="time" class="form-control form-input-reduced"
+                                value="{{ i.time }}" readonly>
+                        </div>
+                    </div>
+                     <div class="form-group row">
+                        <label for="city" class="col-sm-3 col-form-label">City:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="city" name="city" class="form-control form-input-reduced"
+                                value="{{ i.city }}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="owner_name" class="col-sm-3 col-form-label">Owner Name:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="owner_name" name="owner_name" class="form-control form-input-reduced"
+                                value="{{ i.owner_name }}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                        <div class="col-sm-9">
+                            <input type="email" id="email" name="email" class="form-control form-input-reduced"
+                                value="{{ i.email }}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
+                        <div class="col-sm-9">
+                            <input type="tel" id="phone" name="phone" class="form-control form-control-sm"
+                                value="{{ i.phone_number }}" readonly>
+                        </div>
+                    </div>
+<!--                    <div class="form-group row">-->
+<!--                        <label for="username" class="col-sm-3 col-form-label">Username:</label>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <input type="text" id="username" name="username" class="form-control form-input-reduced"-->
+<!--                                value="{{ i.username }}" readonly>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="zip" class="col-sm-3 col-form-label">Zip Code:</label>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <input type="number" id="zip" name="zip" class="form-control form-input-reduced"-->
+<!--                                value="{{ i.zip_code }}" readonly>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="password" class="col-sm-3 col-form-label">Password:</label>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <input type="password" id="password" name="password" class="form-control form-control-sm"-->
+<!--                                value="{{ i.password }}" readonly>-->
+<!--                            <input type="checkbox" id="show-password-checkbox"> Show Password-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <div class="offset-sm-3 col-sm-9">-->
+<!--                              {% csrf_token %}-->
+<!--                            <input type="text" value="{{i.username}}" name="c1" hidden="">-->
+<!--                            <input type="submit" class="btn btn-primary" value="Update">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{{ i.photo.url }}" alt="Photo Image" class="photo-image">
+<!--                <img src="{{ i.license.url }}" alt="License Image" class="license-image">-->
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <script src="{% static 'https://code.jquery.com/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %}"></script>
+    <script>
+        function toggleActive(link) {
+        var links = document.querySelectorAll('.nav-link');
+        links.forEach(function(item) {
+            item.classList.remove('active-link');
+        });
+        link.classList.add('active-link');
+    }
+ function togglePaymentOptions() {
+    var dropdown = document.getElementById('payment-dropdown');
+    dropdown.classList.toggle('show');
+}
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40; /* Side navbar background color */
+            color: #ffffff; /* Text color */
+            padding-top: 60px; /* Adjust padding to align content below top bar */
+        }
+
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar-brand-section {
+            padding: 20px; /* Padding for the whole section */
+            text-align: center; /* Center the text */
+        }
+
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff; /* Text color */
+            margin-bottom: 25px; /* Remove bottom margin */
+            margin-top: -40px; /* Remove top margin */
+        }
+
+        .content {
+            margin-left: 250px; /* Adjust margin to push content to the right of side nav */
+            padding: 20px;
+        }
+
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px; /* Adjust to move it further to the left */
+            color: #000000; /* Change default color to black */
+        }
+
+        .search-bar-container {
+            position: absolute;
+            top: 20px;
+            right: 200px; /* Adjust to move it further to the left */
+            color: #000000; /* Change default color to black */
+        }
+
+        .search-bar {
+            border: 1px solid #000; /* Add border */
+            border-radius: 5px; /* Add border-radius */
+            padding: 8px 10px; /* Adjust padding */
+            background-color: #fff; /* Background color */
+            outline: none; /* Remove outline */
+            width: 200px; /* Adjust width as needed */
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px; /* Adjust to move it further to the left */
+            transform: translateY(-50%);
+            width: 20px; /* Adjust size as needed */
+        }
+
+        /* Add toggle effect */
+        .active-link {
+            color: #bf925b !important; /* Change to brown color when active */
+        }
+
+        .welcome-message {
+            color: #bf925b;
+        }
+
+        .profile-container {
+            margin-left: 250px; /* Adjust margin to account for side navbar */
+            padding: 20px;
+        }
+
+        .form-input-reduced {
+            width: 500px; /* Adjust the width as needed */
+        }
+
+        .fas {
+            /* Font Awesome icon styles (adjust as needed) */
+            font-size: 16px;
+            color: #ccc;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .form-control-sm {
+            width: 500px; /* Adjust the width as needed */
+        }
+
+        #show-password {
+            cursor: pointer;
+        }
+
+        .change-password-link {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-left: 250px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #343a40;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            left: 250px;
+            top: 0;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #bf925b;
+            color: white;
+        }
+
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link .arrow {
+            float: right;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="side-nav">
+        <div class="navbar-brand-section">
+            <a class="navbar-brand logo" href="#">
+                <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+            </a>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/" onclick="toggleActive(this)">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active-link" href="profile" onclick="toggleActive(this)">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="uviewappt" onclick="toggleActive(this)">My Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="toggleComplaintOptions()">Complaint<span class="arrow">></span></a>
+                <div id="complaint-dropdown" class="dropdown-content">
+                    <a href="comp" onclick="toggleActive(this)">Add</a>
+                    <a href="usviewcomp" onclick="toggleActive(this)">View</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="log_out" onclick="toggleActive(this)">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <!--<a class="logout" href="log_out">Logout</a>-->
+    <div class="profile-container">
+        <!--<h1>User Profile</h1>-->
+        <form action="updateuser" method="POST">
+            {% for i in r %}
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="name" class="col-sm-3 col-form-label">Name:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="name" name="name" class="form-control form-input-reduced" value="{{ i.name }}" required="">
+                </div>
+            </div>
+            <!--
+            <div class="form-group row">
+                <label for="username" class="col-sm-3 col-form-label">Username:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="username" name="username" class="form-control form-input-reduced" value="{{ i.username }}" required="">
+                </div>
+            </div>
+            -->
+            <div class="form-group row">
+                <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                <div class="col-sm-9">
+                    <input type="email" id="email" name="email" class="form-control form-input-reduced" value="{{ i.email }}" required="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
+                <div class="col-sm-9">
+                    <input type="tel" id="phone_number" name="phone_number" class="form-control form-input-reduced" value="{{ i.phone_number }}" required="">
+                </div>
+            </div>
+            <!--
+            <div class="form-group row">
+                <label for="password" class="col-sm-3 col-form-label">Password:</label>
+                <div class="col-sm-9">
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" class="form-control form-control-sm" value="{{ i.password }}" readonly>
+                        <input type="checkbox" id="show-password-checkbox"> Show Password
+                        <a href="ch_password" class="change-password-link">Change Password</a>
+                    </div>
+                </div>
+            </div>
+            -->
+            <!--
+            <div class="form-group row">
+                <label for="gender" class="col-sm-3 col-form-label">Gender:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="gender" name="gender" class="form-control form-input-reduced" value="{{ i.gender }}" readonly>
+                </div>
+            </div>
+            -->
+            <div class="form-group row">
+                <div class="col-sm-9 offset-sm-3">
+                    {% csrf_token %}
+                    <input type="text" value="{{ i.username }}" name="username" hidden="">
+                    <input type="submit" class="btn btn-primary" value="Update">
+                    <a href="ch_password" class="change-password-link">Change Password</a>
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+    </div>
+
+    <script src="{% static 'https://code.jquery.com/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %}"></script>
+    <script>
+        const togglePassword = document.querySelector('#show-password-checkbox');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('change', function () {
+            const type = this.checked ? 'text' : 'password';
+            password.setAttribute('type', type);
+        });
+
+        function toggleComplaintOptions() {
+            var dropdown = document.getElementById('complaint-dropdown');
+            dropdown.classList.toggle('show');
+        }
+    </script>
+</body>
+
+</html>

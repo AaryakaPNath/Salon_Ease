@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40;
+            color: #ffffff;
+            padding-top: 60px;
+        }
+
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar-brand-section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 25px;
+            margin-top: -40px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px;
+            color: #000000;
+        }
+
+        .search-bar-container {
+            position: absolute;
+            top: 20px;
+            right: 200px;
+            color: #000000;
+        }
+
+        .search-bar {
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 8px 10px;
+            background-color: #fff;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 20px;
+        }
+
+        .active-link {
+            color: #bf925b !important;
+        }
+
+        .welcome-message {
+            color: #bf925b;
+        }
+
+        .profile-container {
+            margin-left: 250px;
+            padding: 20px;
+            margin-top: 50px; /* Added margin to bring the box lower */
+        }
+
+        .profile-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .profile-box h2 {
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .form-input-reduced {
+            width: 100%;
+        }
+
+        .fas {
+            font-size: 16px;
+            color: #ccc;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .form-control-sm {
+            width: 100%;
+        }
+
+        #show-password {
+            cursor: pointer;
+        }
+
+        .change-password-link {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #343a40;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            left: 250px;
+            top: 0;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #bf925b;
+            color: white;
+        }
+
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link .arrow {
+            float: right;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="side-nav">
+        <div class="navbar-brand-section">
+            <a class="navbar-brand logo" href="#">
+                <span class="flaticon-scissors-in-a-hair-salon-badge"></span>SalonEase
+            </a>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/" onclick="toggleActive(this)">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active-link" href="profile" onclick="toggleActive(this)">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="uviewappt" onclick="toggleActive(this)">My Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="toggleComplaintOptions()">Complaint<span class="arrow">></span></a>
+                <div id="complaint-dropdown" class="dropdown-content">
+                    <a href="comp" onclick="toggleActive(this)">Add</a>
+                    <a href="usviewcomp" onclick="toggleActive(this)">View</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="log_out" onclick="toggleActive(this)">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <!-- <a class="logout" href="log_out">Logout</a> -->
+    {% for i in r %}
+    <div class="profile-container">
+        <div class="profile-box">
+            <h2>User Profile</h2>
+            <form action="update" method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label">Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="name" name="name" class="form-control form-input-reduced" value="{{ i.name }}" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="username" class="col-sm-3 col-form-label">Username:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="username" name="username" class="form-control form-input-reduced" value="{{ i.username }}" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                    <div class="col-sm-9">
+                        <input type="email" id="email" name="email" class="form-control form-input-reduced" value="{{ i.email }}" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
+                    <div class="col-sm-9">
+                        <input type="tel" id="phone" name="phone" class="form-control form-input-reduced" value="{{ i.phone_number }}" readonly>
+                    </div>
+                </div>
+<!--                <div class="form-group row">-->
+<!--                    <label for="password" class="col-sm-3 col-form-label">Password:</label>-->
+<!--                    <div class="col-sm-9">-->
+<!--                        <input type="password" id="password" name="password" class="form-control form-control-sm" value="{{ i.password }}" readonly>-->
+<!--                        <input type="checkbox" id="show-password-checkbox"> Show Password-->
+<!--                    </div>-->
+<!--                </div>-->
+                <!-- <div class="form-group row">
+                    <label for="gender" class="col-sm-3 col-form-label">Gender:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="gender" name="gender" class="form-control form-input-reduced" value="{{ i.gender }}" readonly>
+                    </div>
+                </div> -->
+                <div class="form-group row">
+                    <div class="offset-sm-3 col-sm-9">
+                        {% csrf_token %}
+                        <input type="text" value="{{i.username}}" name="c1" hidden>
+                        <input type="submit" class="btn btn-primary" value="Update">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const togglePassword = document.querySelector('#show-password-checkbox');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('change', function () {
+            const type = this.checked ? 'text' : 'password';
+            password.setAttribute('type', type);
+        });
+
+        function toggleComplaintOptions() {
+            var dropdown = document.getElementById('complaint-dropdown');
+            dropdown.classList.toggle('show');
+        }
+    </script>
+</body>
+
+</html>

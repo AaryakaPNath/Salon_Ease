@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Service</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            height: 200px; /* Adjust height as needed */
+            background-image: url("{% static 'images/bg-5.png' %}"); /* Path to your background image */
+            background-size: cover;
+            background-position: center;
+        }
+        .table-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            color: #343a40; /* Dark gray text */
+        }
+        .table th {
+            background-color: #bf925b; /* Matching header background color */
+            color: white; /* White text */
+        }
+        .table td {
+            background-color: #f8f9fa; /* Light gray background for table cells */
+        }
+        .btn-outline-danger {
+            border-color: #bf925b; /* Matching button border color */
+            color: #bf925b; /* Matching button text color */
+        }
+        .btn-outline-success {
+            border-color: #28a745; /* Green border color for update button */
+            color: #28a745; /* Green text color for update button */
+        }
+        .btn-outline-danger:hover {
+            background-color: #bf925b; /* Matching button background color on hover */
+            color: white; /* White text on hover */
+        }
+        .btn-outline-success:hover {
+            background-color: #28a745; /* Green background color on hover */
+            color: white; /* White text on hover */
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white; /* Set the link color to white */
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/" class="back-link">&laquo; Back</a> <!-- Replace 'previous_page_url' with the actual URL -->
+
+<div class="header"></div>
+
+    <!-- Service Table -->
+    <div class="container table-container">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th><b>Category</b></th>
+                    <th><b>Service</b></th>
+                    <th><b>Description</b></th>
+                    <th><b>Photo</b></th>
+                    <th><b>Amount</b></th>
+                    <th><b>Delete Service</b></th>
+                    <th><b>Update Service</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in r %}
+                    <tr>
+                        <td>{{ i.category }}</td>
+                        <td>{{ i.service_name }}</td>
+                        <td>{{ i.description }}</td>
+                        <td><img src="{{ i.service_photo.url }}" height="100px" width="100px" class="view-image"></td>
+                        <td>{{ i.amount }}</td>
+                        <td>
+                            <form method="POST" action="delete_service">
+                                {% csrf_token %}
+                                <input type="text" value="{{i.username}}" name="b1" hidden>
+                                <input type="text" value="{{i.service_name}}" name="b2" hidden>
+                                 <input type="text" value="{{i.gender}}" name="b3" hidden>
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" onclick="return confirm('Are You Sure')">
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST" action="update_service">
+                                {% csrf_token %}
+                                <input type="text" value="{{ i.username }}" name="b1" hidden>
+                                <input type="text" value="{{ i.service_name }}" name="b2" hidden>
+                                 <input type="text" value="{{ i.gender }}" name="b3" hidden>
+                                <input type="submit" value="Update" class="btn btn-outline-success" onclick="return confirm('Are You Sure')">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<!-- Bootstrap scripts (jQuery and Popper.js are required) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Your custom JavaScript code goes here -->
+<script>
+
+</script>
+</body>
+</html>

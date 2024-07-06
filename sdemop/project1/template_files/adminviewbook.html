@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <style>
+        body {
+            background-image: url("{% static 'images/bg-16.jpg' %}"); /* Replace with your actual image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 80%; /* Adjust the width as needed */
+            margin: auto; /* Center the table */
+            border-collapse: collapse;
+            margin-top: 50px; /* Increase margin-top value */
+            background-color: white; /* Ensure the table has a white background */
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 50px; /* Add margin at the bottom of the heading */
+        }
+        th {
+            font-size: 20px; /* Font size for table headers */
+        }
+        td {
+            font-size: 18px; /* Font size for table cells */
+        }
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">&laquo; Back</a>
+    <h1>Booking Details</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salon Name</th>
+                <th>Customer Name</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Service</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in r %}
+                <tr>
+                    <td>{{ i.username }}</td>
+                    <td>{{ i.salon_name }}</td>
+                    <td>{{ i.customer_name }}</td>
+                    <td>{{ i.appointment_date }}</td>
+                    <td>{{ i.appointment_time }}</td>
+                    <td>{{ i.service_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

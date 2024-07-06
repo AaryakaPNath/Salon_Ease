@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon Appointment Form</title>
+<meta name="keywords" content="Salon Appointment Form, Responsive, Bootstrap, CSS, HTML">
+<!-- Custom Theme files -->
+<link href="{% static 'path/to/wickedpicker.css' %}" rel="stylesheet" type='text/css' media="all" />
+<link href="{% static 'path/to/style.css' %}" rel='stylesheet' type='text/css' />
+<!-- fonts -->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet">
+<!-- //fonts -->
+<style>
+    body {
+        background-image: url("{% static 'images/bg-6.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        font-family: 'Roboto', sans-serif;
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .bg-agile {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 10px;
+        max-width: 800px;
+        margin: 50px auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        color: black;
+    }
+    .book-appointment h2, .book-appointment h3 {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .form-group .gaps {
+        width: 48%;
+    }
+    .form-group .gaps.full-width {
+        width: 100%;
+    }
+    .form-group .gaps input, .form-group .gaps select, .form-group .gaps textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+    .form-group .gaps p {
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+    .btn-send {
+        background-color: #5cb85c;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 20px auto 0;
+    }
+    .btn-send:hover {
+        background-color: #4cae4c;
+    }
+    h1 {
+        color: white;
+    }
+</style>
+</head>
+<body>
+{% for i in r4 %}
+<h1>{{r3}} APPOINTMENT FORM</h1>
+<div class="bg-agile">
+    <div class="book">
+        <h3 style="color:red"><center>Working Time: {{r2}}</center></h3>
+        <br>
+        <h2><center>MAKE AN APPOINTMENT</center></h2>
+        <form id="appointmentForm" action="../../book" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+            <div class="form-group">
+                <div class="gaps full-width">
+                    <p>Customer Name</p>
+                    <input type="text" name="customer_name" value="{{i.name}}" placeholder="" required=""/>
+                </div>
+                <div class="gaps">
+                    <p>Phone Number</p>
+                    <input type="text" name="mobile" value="{{i.phone_number}}" placeholder="" pattern="[0-9]{10}" required=""/>
+                </div>
+                <div class="gaps">
+                    <p>Email</p>
+                    <input type="email" name="email" value="{{i.email}}" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" placeholder="" required="" />
+                </div>
+                <div class="gaps">
+                    <p>Appointment Date</p>
+                    <input name="appointment_date" type="date" id="appointmentDate" required="">
+                </div>
+                <div class="gaps">
+                    <p>Appointment Time</p>
+                    <select id="appointmentTime" name="appointment_time" required>
+                        <!-- Time options will be populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="gaps">
+                    <p>Service</p>
+                    <input type="text" name="service_name" value="{{r5}}" readonly required=""/>
+                </div>
+                <div class="gaps">
+                    <p>Amount</p>
+                    <input type="number" name="amount" value="{{r6}}" readonly required=""/>
+                </div>
+                <div class="gaps">
+                    <input type="text" name="username" value="{{r1}}" hidden="" placeholder="Username" required=""/>
+                </div>
+                {% for i in r %}
+                <div class="gaps">
+                    <input type="text" name="salon_name" value="{{i.salon_name}}" hidden="" placeholder="Salon Name" required=""/>
+                </div>
+                {% endfor %}
+            </div>
+            <input type="submit" value="Make Appointment" class="btn btn-send" onclick="return confirm('Are You Sure')">
+        </form>
+    </div>
+</div>
+{% endfor %}
+<script type="text/javascript" src="{% static 'path/to/jquery-2.1.4.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'path/to/wickedpicker.js' %}"></script>
+<script>
+    // Ensure WickedPicker is initialized if needed
+    // $('.timepicker').wickedpicker({twentyFour: false});
+
+    // Function to get the current date in YYYY-MM-DD format
+    function getCurrentDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let day = today.getDate();
+        month = month < 10 ? '0' + month : month;
+        day = day < 10 ? '0' + day : day;
+        return `${year}-${month}-${day}`;
+    }
+
+    // Set the minimum date for the appointment date picker
+    document.getElementById('appointmentDate').min = getCurrentDate();
+
+    // Function to parse working hours and generate time options
+    function generateTimeOptions(workingHours) {
+        const [openTime, closeTime] = workingHours.split(' to ');
+        const open = parseTime(openTime);
+        const close = parseTime(closeTime);
+
+        const timeSelect = document.getElementById('appointmentTime');
+        timeSelect.innerHTML = ''; // Clear existing options
+
+        let currentTime = new Date(open);
+        while (currentTime < close) {
+            const option = document.createElement('option');
+            option.value = formatTime24(currentTime);
+            option.textContent = formatTime(currentTime);
+            timeSelect.appendChild(option);
+            currentTime.setMinutes(currentTime.getMinutes() + 30); // Increment by 30 minutes
+        }
+    }
+
+    // Function to parse time strings like "9 am" to Date objects
+    function parseTime(timeStr) {
+        const [time, period] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':').map(Number);
+        if (period === 'pm' && hours !== 12) hours += 12;
+        if (period === 'am' && hours === 12) hours = 0;
+        const date = new Date();
+        date.setHours(hours, minutes || 0, 0, 0);
+        return date;
+    }
+
+    // Function to format Date objects to "h:mm AM/PM"
+    function formatTime(date) {
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const period = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert 24-hour time to 12-hour time
+        return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${period}`;
+    }
+
+    // Function to format Date objects to "HH:MM" in 24-hour format
+    function formatTime24(date) {
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+    }
+
+    // Retrieve working hours from the hidden input field and generate time options
+    const workingHours = '{{r2}}';
+    generateTimeOptions(workingHours);
+</script>
+</body>
+</html>

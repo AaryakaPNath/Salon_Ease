@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Popup Login Form Design | CodingNepal</title>
+    <link rel="stylesheet" href="{% static 'style2.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<a href="/" class="back-link" style="position: absolute; top: 10px; left: 10px; text-decoration: none; color: #333; font-weight: bold;">&laquo; Back</a>
+
+<div class="center">
+    <div class="container">
+<!--        <label for="show" class="close-btn fas fa-times" title="close"></label>-->
+        <div class="text">
+            LOGIN
+        </div>
+        <form method="post" action="log_in">
+            {% csrf_token %}
+            <div class="data">
+                <label>Username</label>
+                <input type="text" name="n1" required>
+            </div>
+            <div class="data">
+                <label>Password</label>
+                <input type="password" name="n2" id="password" required>
+            </div>
+            <div class="forgot-pass">
+                <a href="forgot" style="color: #3498db; text-decoration: none;">Forgot Password?</a>
+                <label for="show-password" class="show-password-label" style="color: #3498db; text-decoration: none; cursor: pointer; margin-left: 50px; font-size: 15px; display: inline-flex; align-items: center;">
+                    <input type="checkbox" id="show-password" onclick="togglePassword()" style="margin-right: 5px;"> Show Password
+                </label>
+            </div>
+            <div class="btn">
+                <div class="inner"></div>
+                <button type="submit">login</button>
+            </div>
+            <div class="signup-link">
+                Not Registered? <a href="/">Signup now</a>
+            </div>
+            {% for i in messages %}
+						<h4>{{i}}</h4>
+					{% endfor %}
+        </form>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        var passwordField = document.getElementById("password");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+        } else {
+            passwordField.type = "password";
+        }
+    }
+</script>
+
+</body>
+</html>

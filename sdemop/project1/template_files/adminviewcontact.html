@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Details</title>
+    <style>
+        body {
+            background-image: url("{% static 'images/bg-18.jpg' %}"); /* Replace with your actual image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 80%; /* Adjust the width as needed */
+            margin: auto; /* Center the table */
+            border-collapse: collapse;
+            margin-top: 50px; /* Increase margin-top value */
+            background-color: white; /* Ensure the table has a white background */
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-size: 20px; /* Font size for table headers */
+        }
+        td {
+            font-size: 18px; /* Font size for table cells */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 50px; /* Add margin at the bottom of the heading */
+        }
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">&laquo; Back</a>
+    <h1>Feedback Details</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in r %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>{{ i.subject }}</td>
+                    <td>{{ i.message }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

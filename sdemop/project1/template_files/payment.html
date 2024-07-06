@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url("{% static 'images/bg-9.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .container button:hover {
+            background-color: #555;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<a href="uviewappt" class="back-link">&laquo; Back</a>
+
+<div class="container">
+    <h2>PAYMENT FORM</h2>
+    <form action="pay/{{r1}}" method="post">
+        {% csrf_token %}
+        {% for i in r %}
+            <label>Salon Name</label>
+            <input placeholder="Name" disabled value="{{ i.salon_name }}" name="a1" type="text" required>
+            <label>Customer Name</label>
+            <input placeholder="Name" disabled value="{{ i.customer_name }}" name="a2" type="text" required>
+            <label>Email</label>
+            <input placeholder="Email" disabled value="{{ i.email }}" name="a3" type="text" required>
+            <label>Service Name</label>
+            <input placeholder="Name" disabled value="{{ i.service_name }}" name="a4" type="text" required>
+            <label>Amount</label>
+            <input placeholder="Amount" disabled value="{{ r1 }}" name="a5" type="text" required>
+<!--            <label>Service Charge</label>-->
+<!--            <input placeholder="Service Charge" disabled value="10" name="a6" type="text" required>-->
+        {% endfor %}
+        <button type="submit" name="submit">Pay Now</button>
+    </form>
+</div>
+
+<!-- footer -->
+<div class="footer-w3l">
+<!--	<p>&copy; 2017 Fare Payment Widget. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>-->
+</div>
+<!-- //footer -->
+
+<!-- js-scripts-->
+<script type="text/javascript" src="{% static 'payment/js/jquery-2.1.4.min.js' %}"></script>
+
+<!-- credit-card -->
+<script type="text/javascript" src="{% static 'payment/js/creditly.js' %}"></script>
+<script type="text/javascript">
+    $(function() {
+        var creditly = Creditly.initialize(
+            '.creditly-wrapper .expiration-month-and-year',
+            '.creditly-wrapper .credit-card-number',
+            '.creditly-wrapper .security-code',
+            '.creditly-wrapper .card-type'
+        );
+
+        $(".creditly-card-form .submit").click(function(e) {
+            e.preventDefault();
+            var output = creditly.validate();
+            if (output) {
+                // Your validated credit card output
+                console.log(output);
+            }
+        });
+    });
+</script>
+<!-- //credit-card -->
+
+<!-- //js-scripts-->
+</body>
+</html>

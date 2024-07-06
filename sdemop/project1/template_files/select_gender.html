@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Select Gender</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Lato', sans-serif;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .left-half, .right-half {
+      flex: 1;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+    .left-half {
+      background-image: url("{% static 'images/formen.jpg' %}"); /* Replace with your left image path */
+    }
+    .right-half {
+      background-image: url("{% static 'images/forwomen.jpg' %}"); /* Replace with your right image path */
+    }
+    .input-box-container {
+      position: absolute;
+      top: 20%; /* Adjust the distance from the top as needed */
+      width: 100%;
+      text-align: center;
+      z-index: 1; /* Ensure the input box is above the images */
+    }
+    .input-box {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      color: #999; /* Light color for default value */
+    }
+    .input-box option {
+      color: #333; /* Default color for all options */
+    }
+    .input-box option:first-child {
+      color: #999; /* Light color for the default value */
+    }
+    .done-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .done-button:hover {
+      background-color: #555;
+    }
+    .question {
+      position: absolute;
+      top: 10%; /* Adjust the distance from the top as needed */
+      width: 100%;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      z-index: 1; /* Ensure the question appears above the images */
+    }
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 18px;
+      color: white;
+      text-decoration: none;
+      z-index: 2; /* Ensure the back link is above other elements */
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <a href="salon_avl/{{ request.session.sa_id }}" class="back-link">&laquo; Back</a>
+  <div class="question">Which services are you interested in?</div>
+  <div class="input-box-container">
+    <form method="post" action="sg">
+      {% csrf_token %}
+      <select name="gender" class="input-box" id="genderSelect">
+        <option value="" disabled selected>Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <button type="submit" class="done-button">Done</button>
+    </form>
+  </div>
+  <div class="container">
+    <div class="left-half"></div>
+    <div class="right-half"></div>
+  </div>
+
+  <script>
+    document.getElementById('genderSelect').addEventListener('change', function() {
+      this.style.color = this.value ? '#333' : '#999';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warning Message</title>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: url("{% static 'images/bg-12.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Style the container for a better shape and positioning */
+        .container {
+            max-width: 600px;
+            margin: 50px auto;  /* Adjust top margin for desired position */
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #996633;  /* Changed color to brown */
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #805029;  /* Darken brown on hover */
+        }
+        .back-button {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .back-button input[type="submit"] {
+            background-color: #6c757d;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-button input[type="submit"]:hover {
+            background-color: #5a6268;
+        }
+        .back-link {  /* Style for the back link */
+            color: white;  /* Changed color to white */
+            text-decoration: none; /* Remove underline */
+        }
+    </style>
+</head>
+<body>
+<!--    <div class="back-button">-->
+<!--        <form action="profi" method="post">-->
+<!--            {% csrf_token %}-->
+<!--            <input type="submit" value="Back">-->
+<!--        </form>-->
+<!--    </div>-->
+<a href="/" class="back-link">&laquo; Back</a>
+    <div class="container">
+        <div class="header">
+            <h1>Warning Message</h1>
+        </div>
+        <form class="form" action="userwarning" method="post">
+            {% csrf_token %}
+            {% for i in r %}
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="n" value="{{i.email}}" class="input-field" placeholder="Email" required>
+            </div>
+            {% endfor %}
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" placeholder="Message" name="n1" class="pass" type="text" required=""></textarea>
+            </div>
+            <div class="form-group">
+                <input class="submit-w3" type="submit" class="btn btn-defeault btn-send" value="Send email">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function myFunction() {
+            alert("success").then(response => {
+                window.location.href = 'salon_page.html';
+            });
+        }
+    </script>
+</body>
+</html>

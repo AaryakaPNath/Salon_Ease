@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Registration Requests</title>
+    <style>
+        body {
+            background-image: url("{% static 'images/bg-18.jpg' %}"); /* Replace with your actual image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 80%; /* Adjust the width as needed */
+            margin: auto; /* Center the table */
+            border-collapse: collapse;
+            margin-top: 50px; /* Increase margin-top value */
+            background-color: white; /* Ensure the table has a white background */
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-size: 20px; /* Font size for table headers */
+        }
+        td {
+            font-size: 18px; /* Font size for table cells */
+        }
+        h1 {
+            text-align: center; /* Center the heading */
+            margin-bottom: 50px; /* Add margin at the bottom of the heading */
+        }
+        .btn {
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+        .btn-remove {
+            background-color: #dc3545;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+        .btn-remove:hover {
+            background-color: #c82333;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .view-image {
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .modal-content, #caption {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        @keyframes zoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">&laquo; Back</a>
+    <h1>View Salons</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Salon Name</th>
+                <th>Owner Name</th>
+                <th>Location</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>License</th>
+                <th>Action</th>
+                <th>Remove</th>
+                <th>Warning Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in r %}
+                <tr>
+                    <td>{{ i.salon_name }}</td>
+                    <td>{{ i.owner_name }}</td>
+                    <td>{{ i.city }}</td>
+                    <td>{{ i.phone_number }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>
+                        <img src="{{ i.license.url }}" height="100px" width="100px" class="view-image" onclick="openModal('{{ i.license.url }}')">
+                    </td>
+                    <td>{{i.action}}</td>
+                    <td>
+                        <form method="POST" action="deletesalon">
+                            {% csrf_token %}
+                            <input type="text" value="{{i.username}}" name="b2" hidden="">
+                            <input type="submit" value="Remove" class="btn btn-remove" onclick="return confirm('Are You Sure')">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="salonwarning">
+                            {% csrf_token %}
+                            <input type="text" value="{{i.salon_name}}" name="b2" hidden="">
+                            <input type="text" value="{{i.email}}" name="b3" hidden="">
+                            <input type="submit" value="Warning" class="btn btn-warning" onclick="return confirm('Are You Sure')">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div>
+
+    <script>
+        function openModal(src) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("img01");
+            modal.style.display = "block";
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>

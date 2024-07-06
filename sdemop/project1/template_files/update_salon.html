@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40;
+            color: #ffffff;
+            padding-top: 60px;
+        }
+
+        .side-nav .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar-brand-section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .navbar-brand-section .navbar-brand,
+        .navbar-brand-section .logo {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 25px;
+            margin-top: -40px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 120px;
+            color: #000000;
+        }
+
+        .search-bar-container {
+            position: absolute;
+            top: 20px;
+            right: 200px;
+            color: #000000;
+        }
+
+        .search-bar {
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 8px 10px;
+            background-color: #fff;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 20px;
+        }
+
+        .active-link {
+            color: #bf925b !important;
+        }
+
+        .welcome-message {
+            color: #bf925b;
+        }
+
+        .profile-container {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .form-input-reduced {
+            width: 50%;
+        }
+
+        .fas {
+            font-size: 16px;
+            color: #ccc;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .form-control-sm {
+            width: 50%;
+        }
+
+        #show-password {
+            cursor: pointer;
+        }
+
+        .change-password-link {
+            position: absolute;
+            top: 70%;
+            right: calc(100% - 500px);
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .profile-container h1 {
+            margin-bottom: 40px;
+        }
+
+        .license-image {
+            width: 100%;
+            height: auto;
+        }
+        .change-password-link {
+            position: relative;
+            top: -10px; /* Adjust this value as needed */
+            margin-left: 700px; /* Adjust this value as needed */
+        }
+    </style>
+</head>
+
+<body>
+    {% for i in r %}
+    <div class="profile-container">
+        <h1>{{i.salon_name}} Profile</h1>
+        <form action="s_update_final" method="POST" onsubmit="return confirm('Are you sure?');" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-sm-9">
+                    <input type="text" value="{{i.username}}" name="c1" hidden="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="salon_name" class="col-sm-3 col-form-label">Name:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="salon_name" name="salon_name" class="form-control form-input-reduced" value="{{i.salon_name}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="owner_name" class="col-sm-3 col-form-label">Owner Name:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="owner_name" name="owner_name" class="form-control form-input-reduced" value="{{i.owner_name}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="time" class="col-sm-3 col-form-label">Working Hours:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="time" name="time" class="form-control form-input-reduced" value="{{i.time}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                <div class="col-sm-9">
+                    <input type="email" id="email" name="email" class="form-control form-input-reduced" value="{{i.email}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
+                <div class="col-sm-9">
+                    <input type="tel" id="phone" name="phone" class="form-control form-control-sm" value="{{i.phone_number}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="city" class="col-sm-3 col-form-label">City:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="city" name="city" class="form-control form-input-reduced" value="{{i.city}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="zip" class="col-sm-3 col-form-label">Zip Code:</label>
+                <div class="col-sm-9">
+                    <input type="number" id="zip" name="zip" class="form-control form-input-reduced" value="{{i.zip_code}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="photo" class="col-sm-3 col-form-label">Photo:</label>
+                <div class="col-sm-9">
+                    <input type="file" id="photo" name="photo" class="form-control form-input-reduced" value="{{i.photo.url}}" required>
+                </div>
+            </div>
+<!--            <div class="form-group row">-->
+<!--                <label for="license" class="col-sm-3 col-form-label">License:</label>-->
+<!--                <div class="col-sm-9">-->
+<!--                    <input type="file" id="license" name="license" class="form-control form-input-reduced" value="{[i.license.url}}" required>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group row">
+                <div class="offset-sm-3 col-sm-9">
+                    <input type="submit" class="btn btn-primary" value="Update">
+                     <a href="ch_password2" class="change-password-link">Change Password</a>
+                </div>
+            </div>
+<!--            <a href="ch_password" class="change-password-link">Change Password</a>-->
+        </form>
+    </div>
+<!--    {% endfor %}-->
+<!--           {% if message %}-->
+<!--        <h3 style="color: red;">{{ message }}</h3>-->
+<!--    {% endif %}-->
+
+    <script src="{% static 'https://code.jquery.com/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %}"></script>
+    <script>
+        const togglePassword = document.querySelector('#show-password-checkbox');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('change', function () {
+            const type = this.checked ? 'text' : 'password';
+            password.setAttribute('type', type);
+        });
+    </script>
+</body>
+
+</html>

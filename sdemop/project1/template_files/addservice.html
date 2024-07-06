@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Service</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url("{% static 'images/bg-4.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Lato', sans-serif;
+    }
+    .main-agileits {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    .sub-head {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .sub-main {
+      display: flex;
+      flex-direction: column;
+    }
+    .sub-main input, .sub-main select {
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      background-color: #fff;
+      color: #333;
+      box-sizing: border-box;
+    }
+    .sub-main select {
+      color: #888; /* Color for the placeholder option */
+    }
+    .sub-main select option[value=""][disabled] {
+      display: none;
+    }
+    .sub-main input[type="submit"] {
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .sub-main input[type="submit"]:hover {
+      background-color: #555;
+    }
+    .header-w3l, .footer-w3 {
+      display: none;
+    }
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="back-link">&laquo; Back</a>
+  <div class="main-agileits">
+    <h2 class="sub-head">SERVICES</h2>
+    <div class="sub-main">
+      <form action="addserv" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for i in r %}
+        <input placeholder="username" name="n4" value="{{i.username}}" hidden type="text" required>
+        <input placeholder="salon name" name="n5" value="{{i.salon_name}}" hidden type="text" required>
+        {% endfor %}
+        <input placeholder="Service" name="n1" type="text" required>
+        <input placeholder="Category" name="n7" type="text" required> <!-- New field for category -->
+        <input placeholder="Description" name="n2" type="text" required>
+        <input placeholder="Amount" name="n3" type="text" required>
+        <select name="n6" required>
+          <option value="" disabled selected>Gender</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+        <input placeholder="Photo" name="n8" type="file" required>
+        <input type="submit" onclick="return confirm('Are You Sure')" value="Add">
+      </form>
+    </div>
+  </div>
+</body>
+</html>
